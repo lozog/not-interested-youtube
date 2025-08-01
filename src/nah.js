@@ -2,6 +2,8 @@
 setInterval(() => {
     addNahBtns("ytd-rich-grid-media #details");
     addNahBtns("ytd-compact-video-renderer #dismissible .details");
+    addNahBtns("ytd-rich-item-renderer .yt-lockup-metadata-view-model-wiz__menu-button");
+    addNahBtns("yt-lockup-view-model .yt-lockup-metadata-view-model-wiz__menu-button");
 }, 2000);
 
 const baseStyles = `
