@@ -12,9 +12,7 @@
     "content_scripts": [
         {
             "matches": ["https://*.youtube.com/*"],
-            "js": ["nah.js"],
-            "all_frames": true,
-            "match_about_blank": true
+            "js": ["nah.js"]
         }
     ],
     "web_accessible_resources": [

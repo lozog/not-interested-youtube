@@ -1,3 +1,12 @@
+(function() {
+    // Only run on main YouTube pages, not in iframes or sandboxed contexts
+    if (window !== window.top || 
+        window.location.href === 'about:blank' || 
+        !window.location.hostname.includes('youtube.com') ||
+        document.documentElement.hasAttribute('sandbox')) {
+        return;
+    }
+
 async function clickButton(button) {
     if (!button || !button.isConnected) {
         logger("no target");
@@ -76,6 +85,13 @@ document.head.insertAdjacentHTML("beforeend", baseStyles);
 
 function getFromStorage(key) {
     return new Promise((resolve, reject) => {
+        // Check if chrome extension context is still valid
+        if (!chrome || !chrome.runtime || !chrome.runtime.id) {
+            console.error('Extension context invalidated - please refresh page');
+            resolve(false); // Return default value
+            return;
+        }
+        
         // browser compatibility
         (typeof browser !== "undefined"
             ? browser.storage
@@ -176,7 +192,7 @@ function isMatchingButton(actionType, candidateLabel, candidateSvg) {
 function actionNah(actionType) {
     return (event) => {
         event.preventDefault();
-        event.stopPropagation();
+        // Don't stop propagation - it breaks YouTube's event handling
 
         // prevent popup from appearing when custom button is pressed
         const popupWrapper = document.querySelector("ytd-popup-container");
@@ -303,3 +319,4 @@ function actionNah(actionType) {
         return false;
     };
 }
+})();
