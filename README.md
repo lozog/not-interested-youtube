@@ -25,7 +25,7 @@ Forked from https://github.com/gurinderhans/not-interested
 
 ### Chrome
 
-1. Checkout the `master-chrome` branch
 1. Navigate to chrome://extensions
 1. Click Load unpacked button
 1. Select src/ folder path
+
