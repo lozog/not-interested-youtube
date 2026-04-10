@@ -217,7 +217,7 @@
                 "#menu #button yt-icon",
 
                 // homepage, recommended videos
-                ".yt-lockup-metadata-view-model__menu-button button",
+                ".ytLockupMetadataViewModelMenuButton button",
             ];
             const menuButton = event.target.parentElement.querySelector(
                 menuButtonSelectors.join(",")
