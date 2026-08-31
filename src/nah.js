@@ -16,7 +16,7 @@
         }
 
         const isTouchscreenEnabled = await getFromStorage(
-            "isTouchscreenEnabled"
+            "isTouchscreenEnabled",
         );
 
         if (!isTouchscreenEnabled) {
@@ -92,7 +92,7 @@
             // Check if chrome extension context is still valid
             if (!chrome || !chrome.runtime || !chrome.runtime.id) {
                 console.error(
-                    "Extension context invalidated - please refresh page"
+                    "Extension context invalidated - please refresh page",
                 );
                 resolve(false); // Return default value
                 return;
@@ -138,7 +138,7 @@
         const btnsToAdd = [];
         const shouldHideNahButton = await getFromStorage("shouldHideNahButton");
         const shouldHideChannelButton = await getFromStorage(
-            "shouldHideChannelButton"
+            "shouldHideChannelButton",
         );
         if (!shouldHideNahButton) {
             btnsToAdd.push(nahButton);
@@ -157,7 +157,7 @@
                     .forEach((vidBox) => {
                         if (
                             vidBox.querySelector(
-                                `button.${btnToAdd.cssClass}`
+                                `button.${btnToAdd.cssClass}`,
                             ) != null
                         )
                             return; // if this vidBox has buttons already, can return early
@@ -181,7 +181,7 @@
         if (!svgElement) return false;
         const paths = svgElement.querySelectorAll("path");
         return Array.from(paths).some(
-            (p) => p.getAttribute("d") === targetPath
+            (p) => p.getAttribute("d") === targetPath,
         );
     }
 
@@ -220,7 +220,7 @@
                 ".ytLockupMetadataViewModelMenuButton button",
             ];
             const menuButton = event.target.parentElement.querySelector(
-                menuButtonSelectors.join(",")
+                menuButtonSelectors.join(","),
             );
 
             if (!menuButton) {
@@ -237,7 +237,7 @@
                     // when navigating between pages, a new copy of the virtual list is added to popupWrapper children
                     // we want the most recent (i.e. last in the last)
                     const popupWrapperInner = popupWrapper.querySelector(
-                        "tp-yt-iron-dropdown:last-of-type"
+                        "tp-yt-iron-dropdown:last-of-type",
                     );
                     const popupSelectors = [
                         // subscriptions
@@ -247,7 +247,7 @@
                         "yt-list-view-model",
                     ];
                     const popupNode = popupWrapperInner.querySelector(
-                        popupSelectors.join(",")
+                        popupSelectors.join(","),
                     );
                     logger("popupNode", popupNode);
 
@@ -275,7 +275,7 @@
                             "yt-list-item-view-model svg",
                         ];
                         const candidateSvg = childNode.querySelector(
-                            candidateSvgSelectors.join(",")
+                            candidateSvgSelectors.join(","),
                         );
 
                         logger("candidate SVG:", candidateSvg);
@@ -283,11 +283,11 @@
                         const isCandidateCorrectButton = isMatchingButton(
                             actionType,
                             candidateLabel,
-                            candidateSvg
+                            candidateSvg,
                         );
                         if (isCandidateCorrectButton) {
                             logger(
-                                `found popupMenuChildren button at index ${i}`
+                                `found popupMenuChildren button at index ${i}`,
                             );
                             buttonChildIndex = i;
                             break;
@@ -309,7 +309,7 @@
                         `:nth-child(${buttonChildIndex})`,
                     ];
                     const notInterestedBtn = popupNode.querySelector(
-                        selectors.join(",")
+                        selectors.join(","),
                     );
                     logger("searching", selectors.join(","), popupNode);
                     logger("notInterestedBtn", notInterestedBtn);
