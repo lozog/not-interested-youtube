@@ -196,7 +196,8 @@
         const langLabels = labels[pageLang] ?? labels[pageLang.split("-")[0]];
         return !!(
             langLabels?.[actionType] &&
-            langLabels[actionType].toLowerCase() === candidateLabel.toLowerCase()
+            langLabels[actionType].toLowerCase() ===
+                candidateLabel.toLowerCase()
         );
     }
 
@@ -228,93 +229,106 @@
             logger("actionNah pressing button");
             await clickButton(menuButton);
 
-            // ..wait for popup to render using artificial delay
-            setTimeout(async () => {
-                try {
-                    // when navigating between pages, a new copy of the virtual list is added to popupWrapper children
-                    // we want the most recent (i.e. last in the last)
-                    const popupWrapperInner = popupWrapper.querySelector(
-                        "tp-yt-iron-dropdown:last-of-type",
+            const MAX_RETRIES = 10;
+            const INITIAL_DELAY_MS = 20;
+            const BACKOFF_BASE_MS = 20;
+
+            const tryFindAndClick = async (attempt) => {
+                // when navigating between pages, a new copy of the virtual list is added to popupWrapper children
+                // we want the most recent (i.e. last in the list)
+                const popupWrapperInner = popupWrapper.querySelector(
+                    "tp-yt-iron-dropdown:last-of-type",
+                );
+                const popupSelectors = [
+                    // subscriptions
+                    "ytd-menu-popup-renderer #items",
+
+                    // homepage, recommended videos
+                    "yt-list-view-model",
+                ];
+                const popupNode = popupWrapperInner?.querySelector(
+                    popupSelectors.join(","),
+                );
+
+                logger(`Attempt ${attempt + 1}`, "popupNode", popupNode);
+
+                if (!popupNode) {
+                    logger(
+                        `Attempt ${attempt + 1} - Could not find popup menu in DOM`,
                     );
-                    const popupSelectors = [
-                        // subscriptions
-                        "ytd-menu-popup-renderer #items",
-
-                        // homepage, recommended videos
-                        "yt-list-view-model",
-                    ];
-                    const popupNode = popupWrapperInner.querySelector(
-                        popupSelectors.join(","),
-                    );
-                    logger("popupNode", popupNode);
-
-                    if (!popupNode) {
-                        logger("Could not find popup menu in DOM");
-                        return;
-                    }
-
-                    let buttonChildIndex = -1;
-                    const popupMenuChildren = Array.from(popupNode.children);
-
-                    logger("Scanning through popupMenuChildren:");
-                    for (let i = 0; i < popupMenuChildren.length; i++) {
-                        const childNode = popupMenuChildren[i];
-                        logger(i, childNode.outerHTML);
-                        const candidateLabel = childNode.textContent.trim();
-
-                        logger("candidate label:", candidateLabel);
-
-                        const isCandidateCorrectButton = isMatchingButton(
-                            actionType,
-                            candidateLabel,
-                            getActiveLabels(),
-                        );
-                        if (isCandidateCorrectButton) {
-                            logger(
-                                `found popupMenuChildren button at index ${i}`,
-                            );
-                            buttonChildIndex = i;
-                            break;
-                        }
-                    }
-
-                    if (buttonChildIndex === -1) {
-                        logger("Could not find button in popupMenuChildren");
-                        return;
-                    }
-                    // nth-child css selector index is 1-based
-                    buttonChildIndex += 1;
-
-                    const selectors = [
-                        // subscriptions
-                        `ytd-menu-popup-renderer #items > ytd-menu-service-item-renderer:nth-child(${buttonChildIndex})`,
-
-                        // homepage, recommended videos
-                        `:nth-child(${buttonChildIndex})`,
-                    ];
-                    const notInterestedBtn = popupNode.querySelector(
-                        selectors.join(","),
-                    );
-                    logger("searching", selectors.join(","), popupNode);
-                    logger("notInterestedBtn", notInterestedBtn);
-
-                    if (notInterestedBtn) {
-                        logger("clicking", notInterestedBtn.textContent.trim());
-                        clickButton(notInterestedBtn);
-
-                        // hide video preview
-                        const videoPreview =
-                            document.querySelector("ytd-video-preview");
-                        videoPreview.hidden = true;
-                    } else {
-                        logger("could not find notInterestedBtn");
-                    }
-                } finally {
-                    logger("removing hide class from popup wrapper");
-                    popupWrapper.classList.remove("hide-popup"); // todo: control with display: none style
-                    logger("done");
+                    return false;
                 }
-            }, 50);
+
+                let buttonChildIndex = -1;
+                const popupMenuChildren = Array.from(popupNode.children);
+
+                logger("Scanning through popupMenuChildren:");
+                for (let i = 0; i < popupMenuChildren.length; i++) {
+                    const childNode = popupMenuChildren[i];
+                    logger(i, childNode.outerHTML);
+                    const candidateLabel = childNode.textContent.trim();
+
+                    logger("candidate label:", candidateLabel);
+
+                    const isCandidateCorrectButton = isMatchingButton(
+                        actionType,
+                        candidateLabel,
+                        getActiveLabels(),
+                    );
+                    if (isCandidateCorrectButton) {
+                        logger(`found popupMenuChildren button at index ${i}`);
+                        buttonChildIndex = i;
+                        break;
+                    }
+                }
+
+                if (buttonChildIndex === -1) {
+                    logger("Could not find button in popupMenuChildren");
+                    return false;
+                }
+                // nth-child css selector index is 1-based
+                buttonChildIndex += 1;
+
+                const selectors = [
+                    // subscriptions
+                    `ytd-menu-popup-renderer #items > ytd-menu-service-item-renderer:nth-child(${buttonChildIndex})`,
+
+                    // homepage, recommended videos
+                    `:nth-child(${buttonChildIndex})`,
+                ];
+                const notInterestedBtn = popupNode.querySelector(
+                    selectors.join(","),
+                );
+                logger("searching", selectors.join(","), popupNode);
+                logger("notInterestedBtn", notInterestedBtn);
+
+                if (notInterestedBtn) {
+                    logger("clicking", notInterestedBtn.textContent.trim());
+                    clickButton(notInterestedBtn);
+
+                    const videoPreview =
+                        document.querySelector("ytd-video-preview");
+                    videoPreview.hidden = true;
+                    return true;
+                } else {
+                    logger("could not find notInterestedBtn");
+                    return false;
+                }
+            };
+
+            try {
+                for (let attempt = 0; attempt < MAX_RETRIES; attempt++) {
+                    const delay =
+                        attempt === 0
+                            ? INITIAL_DELAY_MS
+                            : BACKOFF_BASE_MS * Math.pow(2, attempt);
+                    await new Promise((r) => setTimeout(r, delay));
+                    if (await tryFindAndClick(attempt)) break;
+                }
+            } finally {
+                logger("removing hide class from popup wrapper");
+                popupWrapper.classList.remove("hide-popup");
+            }
 
             return false;
         };
