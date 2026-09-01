@@ -35,9 +35,192 @@
         frameWin.postMessage({ __ext__: "activate", token }, "*");
     }
 
+    const pageLang = document.documentElement.lang;
+
+    logger({ pageLang });
+
     const LABELS = {
-        nah: "Not interested",
-        channel: "Don't recommend channel",
+        "af-ZA": {
+            nah: "Stel nie belang nie",
+            channel: "Moenie kanaal aanbeveel nie",
+        },
+        "az-Latn-AZ": {
+            nah: "Maraqlı deyil",
+            channel: "Kanalı tövsiyə etməyin",
+        },
+        "id-ID": {
+            nah: "Tidak tertarik",
+            channel: "Jangan rekomendasikan channel",
+        },
+        "ms-MY": { nah: "Tidak berminat", channel: "Jangan cadangkan saluran" },
+        "bs-Latn-BA": {
+            nah: "Ne zanima me",
+            channel: "Nemoj preporučiti kanal",
+        },
+        "ca-ES": {
+            nah: "No m'interessa",
+            channel: "No em recomanis aquest canal",
+        },
+        "cs-CZ": { nah: "Nezajímá mě", channel: "Nedoporučovat kanál" },
+        "da-DK": { nah: "Ikke interesseret", channel: "Anbefal ikke kanal" },
+        "de-DE": {
+            nah: "Kein Interesse",
+            channel: "Keine Videos von diesem Kanal empfehlen",
+        },
+        "et-EE": { nah: "Ei ole huvitatud", channel: "Ära soovita kanalit" },
+        "en-IN": { nah: "Not interested", channel: "Don't recommend channel" },
+        "en-GB": { nah: "Not interested", channel: "Don't recommend channel" },
+        en: { nah: "Not interested", channel: "Don't recommend channel" },
+        "es-ES": {
+            nah: "No me interesa",
+            channel: "No recomendarme este canal",
+        },
+        "es-419": { nah: "No me interesa", channel: "No recomendar el canal" },
+        "es-US": { nah: "No me interesa", channel: "No recomendar el canal" },
+        "eu-ES": {
+            nah: "Ez zait interesatzen",
+            channel: "Ez gomendatu kanala",
+        },
+        "fil-PH": {
+            nah: "Hindi interesado",
+            channel: "Huwag irekomenda ang channel",
+        },
+        "fr-FR": {
+            nah: "Pas intéressé",
+            channel: "Ne pas recommander la chaîne",
+        },
+        "fr-CA": {
+            nah: "Pas intéressé",
+            channel: "Ne pas recommander la chaîne",
+        },
+        "gl-ES": { nah: "Non me interesa", channel: "Non recomendar a canle" },
+        "hr-HR": { nah: "Ne zanima me", channel: "Ne preporučuj mi taj kanal" },
+        "zu-ZA": { nah: "Awunantshisekelo", channel: "Asisincomi isiteshi" },
+        "is-IS": { nah: "Hef ekki áhuga", channel: "Ekki mæla með rás" },
+        "sw-TZ": { nah: "Hainivutii", channel: "Usipendekeze chaneli" },
+        "lv-LV": { nah: "Neesmu ieinteresēts", channel: "Neieteikt kanālu" },
+        "lt-LT": { nah: "Nedomina", channel: "Nerekomenduoti kanalo" },
+        "hu-HU": { nah: "Nem érdekel", channel: "Ne javasold ezt a csatornát" },
+        "nl-NL": {
+            nah: "Niet geïnteresseerd",
+            channel: "Kanaal niet aanbevelen",
+        },
+        "nb-NO": {
+            nah: "Ikke interessert",
+            channel: "Ikke anbefal denne kanalen",
+        },
+        "uz-Latn-UZ": {
+            nah: "Bu menga qiziq emas",
+            channel: "Bu kanal tavsiya qilinmasin",
+        },
+        "pl-PL": {
+            nah: "Nie interesuje mnie to",
+            channel: "Nie polecaj kanału",
+        },
+        "pt-PT": { nah: "Sem interesse", channel: "Não recomendar canal" },
+        "pt-BR": {
+            nah: "Não tenho interesse",
+            channel: "Não recomendar o canal",
+        },
+        "ro-RO": { nah: "Nu mă interesează", channel: "Nu recomanda canalul" },
+        "sq-AL": {
+            nah: "Nuk më intereson",
+            channel: "Mos e rekomando kanalin",
+        },
+        "sk-SK": { nah: "Nemám záujem", channel: "Neodporúčať kanál" },
+        "sl-SI": { nah: "Ne zanima me", channel: "Ne priporočaj kanala" },
+        "sr-Latn-RS": { nah: "Ne zanima me", channel: "Ne preporučuj kanal" },
+        "fi-FI": {
+            nah: "En ole kiinnostunut",
+            channel: "Älä suosittele kanavaa",
+        },
+        "sv-SE": {
+            nah: "Inte intresserad",
+            channel: "Rekommendera inte kanalen",
+        },
+        "vi-VN": { nah: "Không quan tâm", channel: "Không đề xuất kênh này" },
+        "tr-TR": { nah: "İlgilenmiyorum", channel: "Kanalı önerme" },
+        "be-BY": { nah: "Не цікавіць", channel: "Не рэкамендаваць канал" },
+        "bg-BG": {
+            nah: "Не проявявам интерес",
+            channel: "Да не се препоръчва каналът",
+        },
+        "ky-KG": { nah: "Кызыксыз", channel: "Канал сунушталбасын" },
+        "kk-KZ": { nah: "Қызықты емес", channel: "Арнаның бейнелерін ұсынбау" },
+        "mk-MK": {
+            nah: "Не ме интересира",
+            channel: "Не препорачувај го каналот",
+        },
+        "mn-MN": { nah: "Сонирхохгүй", channel: "Суваг бүү санал болго" },
+        "ru-RU": {
+            nah: "Не интересует",
+            channel: "Не рекомендовать видео с этого канала",
+        },
+        "sr-Cyrl-RS": { nah: "Не занима ме", channel: "Не препоручуј канал" },
+        "uk-UA": { nah: "Не цікавить", channel: "Не рекомендувати канал" },
+        "el-GR": {
+            nah: "Δεν ενδιαφέρομαι",
+            channel: "Να μην προτείνεται το κανάλι",
+        },
+        "hy-AM": {
+            nah: "Չի հետաքրքրում",
+            channel: "Չառաջարկել այս ալիքի տեսանյութերը",
+        },
+        "he-IL": {
+            nah: "לא מעניין אותי",
+            channel: "אני לא רוצה לקבל המלצה על הערוץ",
+        },
+        "ur-PK": { nah: "دلچسپی نہیں ہے", channel: "چینل کو تجویز نہ کریں" },
+        ar: { nah: "لا يهمني", channel: "عدم اقتراح القناة" },
+        "fa-IR": { nah: "علاقه‌مند نیستم", channel: "کانال توصیه نشود" },
+        "ne-NP": { nah: "इच्छुक छैन", channel: "च्यानल सिफारिस गर्नुहोस्" },
+        "mr-IN": { nah: "स्वारस्य नाही", channel: "चॅनलची शिफारस करू नका" },
+        "hi-IN": { nah: "दिलचस्पी नहीं है", channel: "यह चैनल न सुझाएं" },
+        "as-IN": { nah: "আগ্ৰহী নহয়", channel: "চেনেল চুপাৰিছ নকৰিব" },
+        "bn-BD": {
+            nah: "আগ্রহী নই",
+            channel: "এই চ্যানেলের ভিডিও সাজেস্ট করবেন না",
+        },
+        "pa-Guru-IN": {
+            nah: "ਦਿਲਚਸਪੀ ਨਹੀਂ",
+            channel: "ਚੈਨਲ ਦੀ ਸਿਫ਼ਾਰਸ਼ ਨਾ ਕਰੋ",
+        },
+        "gu-IN": { nah: "રુચિ નથી", channel: "ચૅનલનો સુઝાવ આપશો નહીં" },
+        "or-IN": {
+            nah: "ଆଗ୍ରହ ନାହିଁ",
+            channel: "ଚ୍ୟାନେଲ୍‍କୁ ସୁପାରିଶ କରନ୍ତୁ ନାହିଁ",
+        },
+        "ta-IN": { nah: "ஆர்வமில்லை", channel: "சேனலைப் பரிந்துரைக்காதே" },
+        "te-IN": {
+            nah: "ఆసక్తి లేనివి",
+            channel: "ఛానెల్‌ను సిఫార్సు చేయవద్దు",
+        },
+        "kn-IN": {
+            nah: "ಆಸಕ್ತಿ ಹೊಂದಿಲ್ಲ",
+            channel: "ಈ ಚಾನಲ್ ಅನ್ನು ಶಿಫಾರಸು ಮಾಡಬೇಡಿ",
+        },
+        "ml-IN": { nah: "താൽപ്പര്യമില്ല", channel: "ചാനൽ നിർദ്ദേശിക്കരുത്" },
+        "si-LK": { nah: "උනන්දුවක් නැති", channel: "නාලිකාව නිර්දේශ නොකරන්න" },
+        "th-TH": { nah: "ไม่สนใจ", channel: "ไม่ต้องแนะนำช่อง" },
+        "lo-LA": { nah: "ບໍ່ສົນໃຈ", channel: "ບໍ່ຕ້ອງແນະນຳຊ່ອງ" },
+        "my-MM": {
+            nah: "စိတ်မ၀င်စားပါ",
+            channel: "ဤချန်နယ်ကို ကျွန်ုပ်အား အကြံမပြုပါနှင့်",
+        },
+        "ka-GE": {
+            nah: "არ მაინტერესებს",
+            channel: "არხისთვის რეკომენდაციის არგაწევა",
+        },
+        "am-ET": { nah: "ፍላጎት የለኝም", channel: "ሰርጥ አይምከሩ" },
+        "km-KH": { nah: "មិន​ចាប់អារម្មណ៍", channel: "កុំ​ណែនាំ​ប៉ុស្តិ៍" },
+        "zh-Hans-CN": { nah: "不感兴趣", channel: "不要推荐此频道" },
+        "zh-Hant-TW": { nah: "不感興趣", channel: "不要推薦這個頻道" },
+        "zh-Hant-HK": { nah: "沒有興趣", channel: "不推薦此頻道" },
+        "ja-JP": {
+            nah: "興味なし",
+            channel: "チャンネルをおすすめに表示しない",
+        },
+        "ko-KR": { nah: "관심 없음", channel: "채널 추천 안함" },
     };
     const SVG_PATHS = {
         nah: "M12 1C5.925 1 1 5.925 1 12s4.925 11 11 11 11-4.925 11-11S18.075 1 12 1Zm0 2a9 9 0 018.246 12.605L4.755 6.661A8.99 8.99 0 0112 3ZM3.754 8.393l15.491 8.944A9 9 0 013.754 8.393Z",
@@ -186,15 +369,19 @@
     }
 
     function isMatchingButton(actionType, candidateLabel, candidateSvg) {
-        const isLabelMatch =
-            LABELS[actionType].toLowerCase() === candidateLabel.toLowerCase();
-        if (isLabelMatch) {
+        const langLabels = LABELS[pageLang] ?? LABELS[pageLang.split("-")[0]];
+
+        if (
+            langLabels &&
+            langLabels[actionType].toLowerCase() ===
+                candidateLabel.toLowerCase()
+        ) {
             logger("Label match");
             return true;
         }
 
         const isSvgMatch = hasMatchingPath(candidateSvg, SVG_PATHS[actionType]);
-        logger(`Nope, checking SVGs`);
+        logger("Nope, checking SVGs");
         if (isSvgMatch) {
             logger("SVG match");
             return true;
@@ -204,7 +391,7 @@
     }
 
     function actionNah(actionType) {
-        return (event) => {
+        return async (event) => {
             event.preventDefault();
             // Don't stop propagation - it breaks YouTube's event handling
 
@@ -229,7 +416,7 @@
             }
 
             logger("actionNah pressing button");
-            clickButton(menuButton);
+            await clickButton(menuButton);
 
             // ..wait for popup to render using artificial delay
             setTimeout(async () => {
@@ -262,7 +449,7 @@
                     logger("Scanning through popupMenuChildren:");
                     for (let i = 0; i < popupMenuChildren.length; i++) {
                         const childNode = popupMenuChildren[i];
-                        logger(i, childNode);
+                        logger(i, childNode.outerHTML);
                         const candidateLabel = childNode.textContent.trim();
 
                         logger("candidate label:", candidateLabel);
@@ -278,7 +465,10 @@
                             candidateSvgSelectors.join(","),
                         );
 
-                        logger("candidate SVG:", candidateSvg);
+                        logger(
+                            "candidate SVG:",
+                            candidateSvg?.outerHTML ?? null,
+                        );
 
                         const isCandidateCorrectButton = isMatchingButton(
                             actionType,
