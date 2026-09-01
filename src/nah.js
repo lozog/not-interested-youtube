@@ -192,39 +192,12 @@
         }
     }
 
-    function hasMatchingPath(svgElement, targetPath) {
-        if (!svgElement) return false;
-        const paths = svgElement.querySelectorAll("path");
-        return Array.from(paths).some(
-            (p) => p.getAttribute("d") === targetPath,
-        );
-    }
-
-    function isMatchingButton(
-        actionType,
-        candidateLabel,
-        candidateSvg,
-        labels,
-    ) {
+    function isMatchingButton(actionType, candidateLabel, labels) {
         const langLabels = labels[pageLang] ?? labels[pageLang.split("-")[0]];
-
-        if (
+        return !!(
             langLabels?.[actionType] &&
-            langLabels[actionType].toLowerCase() ===
-                candidateLabel.toLowerCase()
-        ) {
-            logger("Label match");
-            return true;
-        }
-
-        const isSvgMatch = hasMatchingPath(candidateSvg, SVG_PATHS[actionType]);
-        logger("Nope, checking SVGs");
-        if (isSvgMatch) {
-            logger("SVG match");
-            return true;
-        }
-
-        return false;
+            langLabels[actionType].toLowerCase() === candidateLabel.toLowerCase()
+        );
     }
 
     function actionNah(actionType) {
@@ -291,26 +264,9 @@
 
                         logger("candidate label:", candidateLabel);
 
-                        const candidateSvgSelectors = [
-                            // subscriptions
-                            "ytd-menu-service-item-renderer tp-yt-paper-item yt-icon span div svg",
-
-                            // homepage, recommended videos
-                            "yt-list-item-view-model svg",
-                        ];
-                        const candidateSvg = childNode.querySelector(
-                            candidateSvgSelectors.join(","),
-                        );
-
-                        logger(
-                            "candidate SVG:",
-                            candidateSvg?.outerHTML ?? null,
-                        );
-
                         const isCandidateCorrectButton = isMatchingButton(
                             actionType,
                             candidateLabel,
-                            candidateSvg,
                             getActiveLabels(),
                         );
                         if (isCandidateCorrectButton) {
