@@ -263,7 +263,7 @@
                 const popupMenuChildren = Array.from(popupNode.children);
 
                 logger("Scanning through popupMenuChildren:");
-                for (let i = 0; i < popupMenuChildren.length; i++) {
+                for (let i = popupMenuChildren.length - 1; i >= 0; i--) {
                     const childNode = popupMenuChildren[i];
                     logger(i, childNode.outerHTML);
                     const candidateLabel = childNode.textContent.trim();
