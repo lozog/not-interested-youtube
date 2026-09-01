@@ -2,7 +2,7 @@
     "manifest_version": 3,
     "name": "Nah - Youtube Not Interested Button",
     "description": "Makes the youtube video not interested button easier to click.",
-    "version": "1.10",
+    "version": "1.11",
     "browser_specific_settings": {
         "gecko": {
             "id": "me@liamozog.com",
