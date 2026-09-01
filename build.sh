@@ -11,5 +11,5 @@ OUTPUT_DIR="../dist"
 
 cd src
 mkdir -p "$OUTPUT_DIR"
-zip -r "$OUTPUT_DIR/$ZIP_NAME" manifest.json nah.js options.html options.js
+zip -r "$OUTPUT_DIR/$ZIP_NAME" manifest.json constants.js nah.js options.html options.js
 cd ..

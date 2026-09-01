@@ -68,35 +68,35 @@
         addNahBtns("ytd-compact-video-renderer #dismissible .details");
     }, 2000);
 
-    const baseStyles = `
-        <style>
-            .nah-btn {
-                position: absolute;
-                right: 0px;
-                background: none;
-                border: none;
-                cursor: pointer;
-                opacity: 0.5;
-                color: #f1f1f1;
-            }
-            .nah-btn:hover {
-                opacity: 1;
-            }
+    const styleEl = document.createElement("style");
+    styleEl.textContent = `
+        .nah-btn {
+            position: absolute;
+            right: 0px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            opacity: 0.5;
+            color: #f1f1f1;
+        }
+        .nah-btn:hover {
+            opacity: 1;
+        }
 
-            .btn-top {
-                top: 45px;
-            }
+        .btn-top {
+            top: 45px;
+        }
 
-            .btn-bottom {
-                top: 65px;
-            }
+        .btn-bottom {
+            top: 65px;
+        }
 
-            .hide-popup {
-                opacity: 0;
-                display: none;
-            }
-        </style>`;
-    document.head.insertAdjacentHTML("beforeend", baseStyles);
+        .hide-popup {
+            opacity: 0;
+            display: none;
+        }
+    `;
+    document.head.appendChild(styleEl);
 
     function getFromStorage(key) {
         return new Promise((resolve, reject) => {
