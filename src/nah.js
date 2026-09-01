@@ -222,14 +222,119 @@
         },
         "ko-KR": { nah: "관심 없음", channel: "채널 추천 안함" },
     };
+
+    // Labels for the subscriptions feed — different wording from the homepage.
+    // Note: "Don't recommend channel" does not appear on the subscriptions feed.
+    const SUBSCRIPTION_LABELS = {
+        "af-ZA": { nah: "Versteek" },
+        "az-Latn-AZ": { nah: "Gizlədin" },
+        "id-ID": { nah: "Sembunyikan" },
+        "ms-MY": { nah: "Sembunyikan" },
+        "bs-Latn-BA": { nah: "Sakrij" },
+        "ca-ES": { nah: "Amaga" },
+        "cs-CZ": { nah: "Skrýt" },
+        "da-DK": { nah: "Skjul" },
+        "de-DE": { nah: "Ausblenden" },
+        "et-EE": { nah: "Peida" },
+        "en-IN": { nah: "Hide" },
+        "en-GB": { nah: "Hide" },
+        en: { nah: "Hide" },
+        "es-ES": { nah: "Ocultar" },
+        "es-419": { nah: "Ocultar" },
+        "es-US": { nah: "Ocultar" },
+        "eu-ES": { nah: "Ezkutatu" },
+        "fil-PH": { nah: "Itago" },
+        "fr-FR": { nah: "Masquer" },
+        "fr-CA": { nah: "Masquer" },
+        "gl-ES": { nah: "Ocultar" },
+        "hr-HR": { nah: "Sakrij" },
+        "zu-ZA": { nah: "Fihla" },
+        "is-IS": { nah: "Fela" },
+        "sw-TZ": { nah: "Ficha" },
+        "lv-LV": { nah: "Paslēpt" },
+        "lt-LT": { nah: "Slėpti" },
+        "hu-HU": { nah: "Elrejtés" },
+        "nl-NL": { nah: "Verbergen" },
+        "nb-NO": { nah: "Skjul" },
+        "uz-Latn-UZ": { nah: "Berkitish" },
+        "pl-PL": { nah: "Ukryj" },
+        "pt-PT": { nah: "Ocultar" },
+        "pt-BR": { nah: "Ocultar" },
+        "ro-RO": { nah: "Ascunde" },
+        "sq-AL": { nah: "Fshih" },
+        "sk-SK": { nah: "Skryť" },
+        "sl-SI": { nah: "Skrij" },
+        "sr-Latn-RS": { nah: "Sakrij" },
+        "fi-FI": { nah: "Piilota" },
+        "sv-SE": { nah: "Dölj" },
+        "vi-VN": { nah: "Ẩn" },
+        "tr-TR": { nah: "Gizle" },
+        "be-BY": { nah: "Схаваць" },
+        "bg-BG": { nah: "Скриване" },
+        "ky-KG": { nah: "Жашыруу" },
+        "kk-KZ": { nah: "Жасыру" },
+        "mk-MK": { nah: "Скриј" },
+        "mn-MN": { nah: "Нуух" },
+        "ru-RU": { nah: "Скрыть" },
+        "sr-Cyrl-RS": { nah: "Сакриј" },
+        "uk-UA": { nah: "Сховати" },
+        "el-GR": { nah: "Απόκρυψη" },
+        "hy-AM": { nah: "Թաքցնել" },
+        "he-IL": { nah: "הסתרה" },
+        "ur-PK": { nah: "چھپائیں" },
+        ar: { nah: "إخفاء" },
+        "fa-IR": { nah: "پنهان کردن" },
+        "ne-NP": { nah: "लुकाउनुहोस्" },
+        "mr-IN": { nah: "लपवा" },
+        "hi-IN": { nah: "छिपाएं" },
+        "as-IN": { nah: "লুকুওৱা" },
+        "bn-BD": { nah: "লুকান" },
+        "pa-Guru-IN": { nah: "ਲੁਕਾਉ" },
+        "gu-IN": { nah: "છુપાવો" },
+        "or-IN": { nah: "ଲୁଚାନ୍ତୁ" },
+        "ta-IN": { nah: "மறை" },
+        "te-IN": { nah: "దాచు" },
+        "kn-IN": { nah: "ಮರೆಮಾಡಿ" },
+        "ml-IN": { nah: "മറയ്‌ക്കുക" },
+        "si-LK": { nah: "සඟවන්න" },
+        "th-TH": { nah: "ซ่อน" },
+        "lo-LA": { nah: "ເຊື່ອງ" },
+        "my-MM": { nah: "ဝှက်ထားရန်" },
+        "ka-GE": { nah: "დამალვა" },
+        "am-ET": { nah: "ይደብቁ" },
+        "km-KH": { nah: "លាក់​" },
+        "zh-Hans-CN": { nah: "隐藏" },
+        "zh-Hant-TW": { nah: "隱藏" },
+        "zh-Hant-HK": { nah: "隱藏" },
+        "ja-JP": { nah: "非表示" },
+        "ko-KR": { nah: "숨기기" },
+    };
+
     const SVG_PATHS = {
         nah: "M12 1C5.925 1 1 5.925 1 12s4.925 11 11 11 11-4.925 11-11S18.075 1 12 1Zm0 2a9 9 0 018.246 12.605L4.755 6.661A8.99 8.99 0 0112 3ZM3.754 8.393l15.491 8.944A9 9 0 013.754 8.393Z",
         channel:
             "M12 1C5.925 1 1 5.925 1 12s4.925 11 11 11 11-4.925 11-11S18.075 1 12 1Zm0 2a9 9 0 110 18.001A9 9 0 0112 3Zm4 8H8a1 1 0 000 2h8a1 1 0 000-2Z",
     };
 
+    function isChannelPage() {
+        const p = window.location.pathname;
+        return (
+            p.startsWith("/@") ||
+            p.startsWith("/channel/") ||
+            p.startsWith("/c/")
+        );
+    }
+
+    function getActiveLabels() {
+        if (window.location.pathname === "/feed/subscriptions")
+            return SUBSCRIPTION_LABELS;
+        return LABELS;
+    }
+
     // keep running so when new videos appear, ie. on page scroll, we add button to them as well
     setInterval(() => {
+        if (isChannelPage()) return;
+
         // subscriptions
         addNahBtns("ytd-rich-grid-media #details");
 
@@ -319,14 +424,18 @@
             title: "Don't recommend channel",
         };
         const btnsToAdd = [];
-        const shouldHideNahButton = await getFromStorage("shouldHideNahButton");
-        const shouldHideChannelButton = await getFromStorage(
+        const shouldHideNahButtonUserPreference = await getFromStorage(
+            "shouldHideNahButton",
+        );
+        const shouldHideChannelButtonUserPreference = await getFromStorage(
             "shouldHideChannelButton",
         );
-        if (!shouldHideNahButton) {
+        if (!shouldHideNahButtonUserPreference) {
             btnsToAdd.push(nahButton);
         }
-        if (!shouldHideChannelButton) {
+        const isSubscriptionsPage =
+            window.location.pathname === "/feed/subscriptions";
+        if (!shouldHideChannelButtonUserPreference && !isSubscriptionsPage) {
             btnsToAdd.push(channelButton);
         }
 
@@ -368,11 +477,16 @@
         );
     }
 
-    function isMatchingButton(actionType, candidateLabel, candidateSvg) {
-        const langLabels = LABELS[pageLang] ?? LABELS[pageLang.split("-")[0]];
+    function isMatchingButton(
+        actionType,
+        candidateLabel,
+        candidateSvg,
+        labels,
+    ) {
+        const langLabels = labels[pageLang] ?? labels[pageLang.split("-")[0]];
 
         if (
-            langLabels &&
+            langLabels?.[actionType] &&
             langLabels[actionType].toLowerCase() ===
                 candidateLabel.toLowerCase()
         ) {
@@ -474,6 +588,7 @@
                             actionType,
                             candidateLabel,
                             candidateSvg,
+                            getActiveLabels(),
                         );
                         if (isCandidateCorrectButton) {
                             logger(
