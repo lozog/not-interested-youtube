@@ -177,6 +177,16 @@
                         )
                             return; // if this vidBox has buttons already, can return early
 
+                        if (btnToAdd.cssClass === "btn-bottom") {
+                            const lockup = vidBox.closest("yt-lockup-view-model");
+                            // Mix/Radio playlists always have an RD-prefixed playlist ID
+                            // stamped as a content-id-RD* class on the lockup host element.
+                            // Regular playlists use PL* and other prefixes, never RD.
+                            const isMix =
+                                lockup?.querySelector('[class*="content-id-RD"]') != null;
+                            if (isMix) return;
+                        }
+
                         const button = document.createElement("button");
                         button.classList.add("nah-btn");
                         button.classList.add(btnToAdd.cssClass);
