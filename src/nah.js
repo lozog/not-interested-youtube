@@ -259,7 +259,7 @@
                     return false;
                 }
 
-                let buttonChildIndex = -1;
+                let foundChild = null;
                 const popupMenuChildren = Array.from(popupNode.children);
 
                 logger("Scanning through popupMenuChildren:");
@@ -277,29 +277,21 @@
                     );
                     if (isCandidateCorrectButton) {
                         logger(`found popupMenuChildren button at index ${i}`);
-                        buttonChildIndex = i;
+                        foundChild = childNode;
                         break;
                     }
                 }
 
-                if (buttonChildIndex === -1) {
+                if (!foundChild) {
                     logger("Could not find button in popupMenuChildren");
                     return false;
                 }
-                // nth-child css selector index is 1-based
-                buttonChildIndex += 1;
 
-                const selectors = [
-                    // subscriptions
-                    `ytd-menu-popup-renderer #items > ytd-menu-service-item-renderer:nth-child(${buttonChildIndex})`,
-
-                    // homepage, recommended videos
-                    `:nth-child(${buttonChildIndex})`,
-                ];
-                const notInterestedBtn = popupNode.querySelector(
-                    selectors.join(","),
-                );
-                logger("searching", selectors.join(","), popupNode);
+                // Prefer a button[role="menuitem"] inside the child (yt-list-view-model style);
+                // fall back to the child itself (ytd-menu-service-item-renderer style).
+                const notInterestedBtn =
+                    foundChild.querySelector('button[role="menuitem"]') ??
+                    foundChild;
                 logger("notInterestedBtn", notInterestedBtn);
 
                 if (notInterestedBtn) {
